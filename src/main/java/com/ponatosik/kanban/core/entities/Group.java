@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -59,6 +60,8 @@ public class Group {
        Group group = new Group();
        group.id = id;
        group.title = title;
+       group.statuses = new ArrayList<>();
+       group.tasks = new ArrayList<>();
        return group;
     }
 }
