@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "myTask")
 public class Task {
     @Id
@@ -40,13 +41,30 @@ public class Task {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Group group;
 
-    Task(Integer id, String title, String description, LocalDateTime deadline, Status status, Group group) {
+    @Setter(AccessLevel.PACKAGE)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Column(name= "taskOrder")
+    private Integer order = null;
+
+    Task(
+            Integer id,
+            String title,
+            String description,
+            LocalDateTime deadline,
+            Status status,
+            Group group,
+            Integer order) {
         this.id = id;
         this.title = title;
         this.deadline = deadline;
         this.description = description;
         this.status = status;
         this.group = group;
+        this.order = order;
+    }
+
+    Task(Integer id, String title, String description, LocalDateTime deadline, Status status, Group group) {
+        this(id, title, description, deadline, status, group, null);
     }
 
     Task(Integer id, String title, String description, Status status, Group group) {

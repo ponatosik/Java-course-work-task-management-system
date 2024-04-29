@@ -1,5 +1,6 @@
 package com.ponatosik.kanban.core.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ponatosik.kanban.core.exceptions.UnknownTaskStatusException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -14,6 +15,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "myGroup")
 public class Group {
     @Id
@@ -37,7 +39,8 @@ public class Group {
             throw new UnknownTaskStatusException();
         }
 
-        Task task = new Task(taskId, taskTitle, description, deadline, taskStatus, this);
+        int taskOrder = tasks.size() + 1;
+        Task task = new Task(taskId, taskTitle, description, deadline, taskStatus, this, taskOrder);
         tasks.add(task);
         return task;
     }
