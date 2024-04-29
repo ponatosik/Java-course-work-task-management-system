@@ -1,6 +1,7 @@
 package com.ponatosik.kanban.core.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ponatosik.kanban.core.exceptions.UnknownTaskException;
 import com.ponatosik.kanban.core.exceptions.UnknownTaskStatusException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -27,6 +28,7 @@ public class Group {
     private String title;
 
     @OneToMany(fetch = FetchType.LAZY)
+    @OrderColumn(name = "taskOrder")
     @JoinColumn
     private List<Task> tasks;
 
@@ -57,6 +59,19 @@ public class Group {
         Status status = new Status(statusId, statusCaption, this);
         statuses.add(status);
         return status;
+    }
+
+    public void swapTasksOrder(Task task1, Task task2) {
+        if (!tasks.contains(task1)) {
+           throw new UnknownTaskException();
+        }
+        if (!tasks.contains(task2)) {
+            throw new UnknownTaskException();
+        }
+
+        int order1 = task1.getOrder();
+        task1.setOrder(task2.getOrder());
+        task2.setOrder(order1);
     }
 
     public static Group createGroup(Integer id, String title) {
