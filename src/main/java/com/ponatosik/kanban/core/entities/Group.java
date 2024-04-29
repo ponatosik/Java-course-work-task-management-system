@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
@@ -72,6 +73,40 @@ public class Group {
         int order1 = task1.getOrder();
         task1.setOrder(task2.getOrder());
         task2.setOrder(order1);
+    }
+
+    public List<Task> moveTaskOrder(Task task, int newOrder) {
+       if (!tasks.contains(task)) {
+           throw new UnknownTaskException();
+       }
+       if (tasks.size() < newOrder) {
+           throw new IndexOutOfBoundsException();
+       }
+
+        int taskOrder = task.getOrder();
+        if(taskOrder == newOrder) {
+            return Collections.emptyList();
+        }
+
+        List<Task> shiftedTasks;
+        if(taskOrder > newOrder) {
+            shiftedTasks = tasks.stream()
+                    .filter(t -> t.getOrder() < taskOrder)
+                    .filter(t -> t.getOrder() >= newOrder)
+                    .toList();
+        } else {
+            shiftedTasks = tasks.stream()
+                    .filter(t -> t.getOrder() > taskOrder)
+                    .filter(t -> t.getOrder() <= newOrder)
+                    .toList();
+        }
+
+        int shiftDirection = (int) Math.signum(taskOrder - newOrder);
+        shiftedTasks.forEach(shiftedTask ->
+                shiftedTask.setOrder(shiftedTask.getOrder() + shiftDirection));
+
+        task.setOrder(newOrder);
+        return shiftedTasks;
     }
 
     public static Group createGroup(Integer id, String title) {

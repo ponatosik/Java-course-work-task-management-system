@@ -4,6 +4,7 @@ import com.ponatosik.kanban.application.interfaces.Mediator;
 import com.ponatosik.kanban.application.requests.*;
 import com.ponatosik.kanban.core.entities.Task;
 import com.ponatosik.kanban.presentation.requests.CreateTaskRequest;
+import com.ponatosik.kanban.presentation.requests.MoveTaskOrderRequest;
 import com.ponatosik.kanban.presentation.requests.SwapTasksOrderRequest;
 import com.ponatosik.kanban.presentation.requests.UpdateTaskRequest;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,10 @@ public class TasksController {
         mediator.send(new SwapTasksOrderCommand(groupId, request.taskId1(), request.taskId2()));
     }
 
+    @PostMapping("move")
+    public void moveOrder(@PathVariable Integer groupId, @RequestBody MoveTaskOrderRequest request) {
+        mediator.send(new MoveTaskOrderCommand(groupId, request.taskId(), request.newOrder()));
+    }
 
     @PatchMapping("{id}")
     public Task update(@PathVariable int groupId, @PathVariable int id, @RequestBody UpdateTaskRequest request) {
@@ -43,7 +48,6 @@ public class TasksController {
 
     @GetMapping()
     public List<Task> get(@PathVariable Integer groupId) {
-        List<Task> tasks = mediator.send(new GetTasksQuery(groupId));
-        return tasks;
+        return mediator.send(new GetTasksQuery(groupId));
     }
 }
