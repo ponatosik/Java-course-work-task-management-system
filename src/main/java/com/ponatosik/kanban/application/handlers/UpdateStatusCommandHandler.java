@@ -5,6 +5,7 @@ import com.ponatosik.kanban.application.interfaces.RequestHandler;
 import com.ponatosik.kanban.application.repositories.StatusRepository;
 import com.ponatosik.kanban.application.requests.UpdateStatusCommand;
 import com.ponatosik.kanban.core.entities.Status;
+import com.ponatosik.kanban.core.exceptions.UnknownStatusException;
 
 @Handler(request = UpdateStatusCommand.class)
 public class UpdateStatusCommandHandler implements RequestHandler<UpdateStatusCommand, Status> {
@@ -16,7 +17,9 @@ public class UpdateStatusCommandHandler implements RequestHandler<UpdateStatusCo
 
     @Override
     public Status handle(UpdateStatusCommand command) {
-        Status status = StatusRepository.findById(command.statusId()).orElseThrow();
+        Status status = StatusRepository.findById(command.statusId()).orElseThrow(() ->
+                new UnknownStatusException(command.statusId(), command.groupId()));
+
         if(command.title() != null) {
             status.setCaption(command.title());
         }

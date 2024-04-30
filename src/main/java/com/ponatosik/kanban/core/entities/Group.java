@@ -1,8 +1,9 @@
 package com.ponatosik.kanban.core.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.ponatosik.kanban.core.exceptions.InvalidTaskOrderException;
 import com.ponatosik.kanban.core.exceptions.UnknownTaskException;
-import com.ponatosik.kanban.core.exceptions.UnknownTaskStatusException;
+import com.ponatosik.kanban.core.exceptions.UnknownStatusException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -39,7 +40,7 @@ public class Group {
 
     public Task createTask(Integer taskId, String taskTitle, String description, LocalDateTime deadline, Status taskStatus) {
         if(!statuses.contains(taskStatus)){
-            throw new UnknownTaskStatusException();
+            throw new UnknownStatusException(taskId, this.id);
         }
 
         int taskOrder = tasks.size() + 1;
@@ -64,10 +65,10 @@ public class Group {
 
     public void swapTasksOrder(Task task1, Task task2) {
         if (!tasks.contains(task1)) {
-           throw new UnknownTaskException();
+            throw new UnknownTaskException(task1.getId(), this.id);
         }
         if (!tasks.contains(task2)) {
-            throw new UnknownTaskException();
+            throw new UnknownTaskException(task2.getId(), this.id);
         }
 
         int order1 = task1.getOrder();
@@ -77,10 +78,10 @@ public class Group {
 
     public List<Task> moveTaskOrder(Task task, int newOrder) {
        if (!tasks.contains(task)) {
-           throw new UnknownTaskException();
+           throw new UnknownTaskException(task.getId(), this.id);
        }
        if (tasks.size() < newOrder) {
-           throw new IndexOutOfBoundsException();
+           throw new InvalidTaskOrderException(task.getId(), newOrder, tasks.size(), this.id);
        }
 
         int taskOrder = task.getOrder();

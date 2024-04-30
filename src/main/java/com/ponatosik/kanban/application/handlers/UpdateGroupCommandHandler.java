@@ -5,6 +5,7 @@ import com.ponatosik.kanban.application.interfaces.RequestHandler;
 import com.ponatosik.kanban.application.repositories.GroupsRepository;
 import com.ponatosik.kanban.application.requests.UpdateGroupCommand;
 import com.ponatosik.kanban.core.entities.Group;
+import com.ponatosik.kanban.core.exceptions.UnknownGroupException;
 
 @Handler(request = UpdateGroupCommand.class)
 public class UpdateGroupCommandHandler implements RequestHandler<UpdateGroupCommand, Group> {
@@ -16,7 +17,9 @@ public class UpdateGroupCommandHandler implements RequestHandler<UpdateGroupComm
 
     @Override
     public Group handle(UpdateGroupCommand command) {
-        Group group = groupsRepository.findById(command.groupId()).orElseThrow();
+        Group group = groupsRepository.findById(command.groupId()).orElseThrow(() ->
+                new UnknownGroupException(command.groupId()));
+
         if(command.groupName() != null) {
            group.setTitle(command.groupName());
         }

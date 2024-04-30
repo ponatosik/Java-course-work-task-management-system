@@ -7,6 +7,7 @@ import com.ponatosik.kanban.application.interfaces.RequestHandler;
 import com.ponatosik.kanban.application.repositories.GroupsRepository;
 import com.ponatosik.kanban.application.repositories.StatusRepository;
 import com.ponatosik.kanban.application.requests.CreateStatusCommand;
+import com.ponatosik.kanban.core.exceptions.UnknownGroupException;
 
 @Handler(request = CreateStatusCommand.class)
 public class CreateStatusCommandHandler implements RequestHandler<CreateStatusCommand, Status> {
@@ -20,7 +21,9 @@ public class CreateStatusCommandHandler implements RequestHandler<CreateStatusCo
 
     @Override
     public Status handle(CreateStatusCommand command) {
-        Group group = groupsRepository.findById(command.groupId()).orElseThrow();
+        Group group = groupsRepository.findById(command.groupId()).orElseThrow(() ->
+                new UnknownGroupException(command.groupId()));
+
         Status status = group.createStatus(null, command.title());
         status = statusRepository.save(status);
         return status;
