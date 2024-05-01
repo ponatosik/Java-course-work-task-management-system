@@ -9,6 +9,8 @@ import com.ponatosik.kanban.application.repositories.GroupsRepository;
 import com.ponatosik.kanban.application.repositories.TaskRepository;
 import com.ponatosik.kanban.application.requests.CreateTaskCommand;
 import com.ponatosik.kanban.core.exceptions.UnknownGroupException;
+import com.ponatosik.kanban.core.exceptions.UnknownStatusException;
+import com.ponatosik.kanban.core.exceptions.UnknownTaskException;
 
 @Handler(request = CreateTaskCommand.class)
 public class CreateTaskCommandHandler implements RequestHandler<CreateTaskCommand, Task> {
@@ -26,9 +28,9 @@ public class CreateTaskCommandHandler implements RequestHandler<CreateTaskComman
                 new UnknownGroupException(command.groupId()));
 
         Status status = group.getStatuses().stream()
-                .filter(stat -> stat.getGroup().getId().equals(command.groupId()))
+                .filter(stat -> stat.getGroup().getId().equals(command.statusId()))
                 .findAny()
-                .orElseThrow();
+                .orElseThrow(() -> new UnknownStatusException(command.statusId(), command.groupId()));
 
         Task task = group.createTask(null, command.title(), status);
         taskRepository.save(task);
