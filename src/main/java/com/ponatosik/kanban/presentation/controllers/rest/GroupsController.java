@@ -2,6 +2,7 @@ package com.ponatosik.kanban.presentation.controllers.rest;
 
 import com.ponatosik.kanban.application.interfaces.Mediator;
 import com.ponatosik.kanban.application.requests.CreateGroupCommand;
+import com.ponatosik.kanban.application.requests.DeleteGroupCommand;
 import com.ponatosik.kanban.application.requests.GetGroupsQuery;
 import com.ponatosik.kanban.application.requests.UpdateGroupCommand;
 import com.ponatosik.kanban.core.entities.Group;
@@ -33,5 +34,10 @@ public class GroupsController {
     @GetMapping()
     public List<Group> getGroups() {
         return mediator.send(new GetGroupsQuery());
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteGroup (@PathVariable int id) {
+        mediator.send(new DeleteGroupCommand(id));
     }
 }
