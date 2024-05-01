@@ -16,7 +16,14 @@ import java.time.LocalDateTime;
 @Table(name = "myTask")
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "sequence-generator"
+    )
+    @SequenceGenerator(
+            name = "sequence-generator",
+            sequenceName = "task_sequence"
+    )
     @Column(name = "id")
     private Integer id;
 
@@ -31,6 +38,7 @@ public class Task {
     @JoinColumn(name = "statusId", referencedColumnName = "id")
     @JsonManagedReference
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @Setter
     private Status status;
 
     @ManyToOne(fetch = FetchType.LAZY)

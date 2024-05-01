@@ -22,7 +22,14 @@ import java.util.List;
 @Table(name = "myGroup")
 public class Group {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "sequence-generator"
+    )
+    @SequenceGenerator(
+            name = "sequence-generator",
+            sequenceName = "group_sequence"
+    )
     @Column(name = "id")
     private Integer id;
 

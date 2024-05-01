@@ -14,7 +14,14 @@ import lombok.Setter;
 @Table(name = "myStatus")
 public class Status {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "sequence-generator"
+    )
+    @SequenceGenerator(
+            name = "sequence-generator",
+            sequenceName = "status_sequence"
+    )
     @Column(name = "id")
     private Integer id;
 
