@@ -8,12 +8,14 @@ import com.ponatosik.kanban.application.requests.UpdateGroupCommand;
 import com.ponatosik.kanban.core.entities.Group;
 import com.ponatosik.kanban.presentation.requests.CreateGroupRequest;
 import com.ponatosik.kanban.presentation.requests.UpdateGroupRequest;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/groups")
+@SecurityRequirement(name = "bearer")
 public class GroupsController {
     private final Mediator mediator;
 

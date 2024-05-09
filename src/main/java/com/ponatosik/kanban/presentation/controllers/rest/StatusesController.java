@@ -5,12 +5,14 @@ import com.ponatosik.kanban.application.requests.*;
 import com.ponatosik.kanban.core.entities.Status;
 import com.ponatosik.kanban.presentation.requests.CreateStatusRequest;
 import com.ponatosik.kanban.presentation.requests.UpdateStatusRequest;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/statuses/{groupId}")
+@SecurityRequirement(name = "bearer")
 public class StatusesController {
     private final Mediator mediator;
 

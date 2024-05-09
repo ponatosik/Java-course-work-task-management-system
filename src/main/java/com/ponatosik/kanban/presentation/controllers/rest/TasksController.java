@@ -7,12 +7,14 @@ import com.ponatosik.kanban.presentation.requests.CreateTaskRequest;
 import com.ponatosik.kanban.presentation.requests.MoveTaskOrderRequest;
 import com.ponatosik.kanban.presentation.requests.SwapTasksOrderRequest;
 import com.ponatosik.kanban.presentation.requests.UpdateTaskRequest;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("api/tasks/{groupId}")
+@SecurityRequirement(name = "bearer")
 public class TasksController {
     private final Mediator mediator;
 
