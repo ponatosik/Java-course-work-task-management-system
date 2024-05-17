@@ -29,8 +29,10 @@ public class GetGroupsQueryHandler implements RequestHandler<GetGroupsQuery, Lis
         if (!userRepository.existsById(user.getId())) {
             user = userRepository.save(user);
         }
+        user = userRepository.findById(user.getId()).orElseThrow();
 
-        return user.getGroups();
+        var a =user.getGroups();
+        return a;
     }
 }
 
