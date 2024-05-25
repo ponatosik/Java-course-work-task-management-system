@@ -12,7 +12,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.5</version>
+        <version>3.2.5</version>
     </parent>
 
     <properties>
@@ -20,7 +20,7 @@
         <maven.compiler.target>20</maven.compiler.target>
         <maven.compiler.release>20</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <start-class>com.ponatosik.kanban.presentation.CliApp</start-class>
+        <start-class>com.ponatosik.kanban.presentation.TaskManagementApp</start-class>
     </properties>
 
     <dependencies>
@@ -95,6 +95,11 @@
             <version>3.5.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-docker-compose</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -108,7 +113,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.ponatosik.kanban.presentation.CliApp</mainClass>
+                    <mainClass>com.ponatosik.kanban.presentation.TaskManagementApp</mainClass>
                 </configuration>
             </plugin>
             <plugin>

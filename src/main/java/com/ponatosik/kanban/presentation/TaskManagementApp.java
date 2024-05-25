@@ -10,8 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @EntityScan(basePackages = "com.ponatosik.kanban.core.entities")
 @ComponentScan(basePackages = {"com.ponatosik.kanban", "com.ponatosik.kanban.application.repositories"})
 @SpringBootApplication
-public class CliApp {
+public class TaskManagementApp {
     public static void main(String[] args) {
-        SpringApplication.run(CliApp.class, args);
+        SpringApplication.run(TaskManagementApp.class, args);
     }
 }
